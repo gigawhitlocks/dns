@@ -40,7 +40,7 @@ void callback(int errcode, struct evutil_addrinfo *addr, void *ptr)
                 s = evutil_inet_ntop(AF_INET6, &sin6->sin6_addr, buf, 128);
             }
             if (s)
-                printf("    -> %s\n", s);
+                printf("    -> %s\n<br />", s);
         }
         evutil_freeaddrinfo(addr);
     }
@@ -52,15 +52,22 @@ void callback(int errcode, struct evutil_addrinfo *addr, void *ptr)
 
 /* Take a list of domain names from the command line and resolve them in
  * parallel. */
-int main(int argc, char **argv)
+int main(void)
 {
-    int i;
+	printf("%s%c%c\n","Content-Type:text/html;charset=iso-8859-1",13,10);
+	char* get = getenv("QUERY_STRING");
+	if (get == NULL ) {
+		printf("no query string\n");
+		return 0;
+	}
+	char* hostname = (char*)malloc(strlen(get)*sizeof(char));
+    int i, argc;
     struct evdns_base *dnsbase;
-
-    if (argc == 1) {
+    if (argc = sscanf(get, "hostname=%s", hostname) < 1 ) {
         puts("No addresses given.");
         return 0;
     }
+	printf("%s\n",hostname);
     base = event_base_new();
     if (!base)
         return 1;
@@ -68,7 +75,7 @@ int main(int argc, char **argv)
     if (!dnsbase)
         return 2;
 
-    for (i = 1; i < argc; ++i) {
+    for (i = 0; i <= argc; ++i) {
         struct evutil_addrinfo hints;
         struct evdns_getaddrinfo_request *req;
         struct user_data *user_data;
@@ -85,7 +92,7 @@ int main(int argc, char **argv)
             perror("malloc");
             exit(1);
         }
-        if (!(user_data->name = strdup(argv[i]))) {
+        if (!(user_data->name = strdup(hostname))) {
             perror("strdup");
             exit(1);
         }
@@ -93,10 +100,10 @@ int main(int argc, char **argv)
 
         ++n_pending_requests;
         req = evdns_getaddrinfo(
-                          dnsbase, argv[i], NULL /* no service name given */,
+                          dnsbase, hostname, NULL /* no service name given */,
                           &hints, callback, user_data);
         if (req == NULL) {
-          printf("    [request for %s returned immediately]\n", argv[i]);
+          printf("    [request for %s returned immediately]\n", hostname);
           /* No need to free user_data or decrement n_pending_requests; that
            * happened in the callback. */
         }
