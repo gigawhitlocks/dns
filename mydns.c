@@ -31,6 +31,7 @@ int main (void) {
 	FILE* host_out = popen(cmd, "r");
 	char* out;
 	free(cmd);
+	free(hostname);
 	if ( host_out == NULL ) { 
 		perror("popen: ");
 		exit(-1);
@@ -39,5 +40,6 @@ int main (void) {
 		while(fscanf(host_out, "%s\n", out) == 1)
 			printf("%s\n",out);
 	}
+	pclose(host_out);
 }
 
