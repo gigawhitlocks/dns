@@ -30,6 +30,7 @@ int main (void) {
 	strcat(cmd, hostname);	
 	FILE* host_out = popen(cmd, "r");
 	char* out;
+	free(cmd);
 	if ( host_out == NULL ) { 
 		perror("popen: ");
 		exit(-1);
@@ -38,25 +39,5 @@ int main (void) {
 		while(fscanf(host_out, "%s\n", out) == 1)
 			printf("%s\n",out);
 	}
-	
-
-/*		pid_t pid = fork();
-		if ( pid == 0 ) { //child
-	//		printf("in the child. hostname = %s",hostname);
-			char* args[] = {"host","-a",hostname, NULL};
-			printf("%s\n%s\n%s\n",args[0],args[1],args[2]);
-			execvp(args[0], args);
-		} else if ( pid > 0 ) {
-			int status;
-			wait(NULL);
-		//	waitpid(pid, &status, 0);
-	//		printf("The input is: %s",hostname);
-
-		} else {
-			perror( "fork" );
-			exit(0);
-		}
-	}
-*/
 }
 
