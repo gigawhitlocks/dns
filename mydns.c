@@ -7,6 +7,7 @@
 #include <stdlib.h>
 
 int main (void) {
+	char* hostname;
 	printf("%s%c%c\n","Content-Type:text/html;charset=iso-8859-1\n",13,10);
 	char* get = getenv("QUERY_STRING");
 	if (get == NULL ) {
@@ -14,11 +15,12 @@ int main (void) {
    		return 0;
 	}
 	else {
-		char* hostname = (char*)malloc(strlen(get)*sizeof(char));
+		hostname = (char*)malloc(strlen(get)*sizeof(char));
 		int i;
 		if (i = sscanf(get, "hostname=%s", hostname) < 1 ) {
         		puts("No addresses given.");
         		return 0;
+		}
   	}
 
 	
@@ -26,7 +28,7 @@ int main (void) {
 	cmd[0] = '\0';
 	strcat(cmd, "host -a ");
 	strcat(cmd, hostname);	
-	FILE* host_out = popen(cmd, 'r');
+	FILE* host_out = popen(cmd, "r");
 	char* out;
 	if ( host_out == NULL ) { 
 		perror("popen: ");
