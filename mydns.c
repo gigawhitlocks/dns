@@ -8,12 +8,11 @@
 
 int main (void) {
 	printf("%s%c%c\n","Content-Type:text/html;charset=iso-8859-1\n",13,10);
-  char* get = getenv("QUERY_STRING");
-  if (get == NULL ) {
-  	printf("no query string\n");
-   	return 0;
-  }
-
+	char* get = getenv("QUERY_STRING");
+	if (get == NULL ) {
+	  	printf("no query string\n");
+   		return 0;
+	}
 	else {
 		char* hostname = (char*)malloc(strlen(get)*sizeof(char));
 		int i;
@@ -21,7 +20,25 @@ int main (void) {
         		puts("No addresses given.");
         		return 0;
   	}
-		pid_t pid = fork();
+
+	
+	char* cmd = (char*)malloc(sizeof(char)*strlen(hostname)+9);
+	cmd[0] = '\0';
+	strcat(cmd, "host -a ");
+	strcat(cmd, hostname);	
+	FILE* host_out = popen(cmd, 'r');
+	char* out;
+	if ( host_out == NULL ) { 
+		perror("popen: ");
+		exit(-1);
+	}
+	else {
+		while(fscanf(host_out, "%s\n", out) == 1)
+			printf("%s\n",out);
+	}
+	
+
+/*		pid_t pid = fork();
 		if ( pid == 0 ) { //child
 	//		printf("in the child. hostname = %s",hostname);
 			char* args[] = {"host","-a",hostname, NULL};
@@ -38,5 +55,6 @@ int main (void) {
 			exit(0);
 		}
 	}
+*/
 }
 
