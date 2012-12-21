@@ -18,7 +18,7 @@ int main (void) {
 	printf("<label for=\"hostname\">Enter a hostname:</label>\n");
 	printf("<input type=\"text\" name=\"hostname\">\n");
 	printf("<input type=\"submit\" value=\"Get DNS Zone\"></form>\n");
-	printf("<pre>");
+	printf("<pre style=\"width:900px\">");
 
 	char* get = getenv("QUERY_STRING");
 
@@ -62,7 +62,7 @@ int main (void) {
 	//otherwise, poop out the output
 	else {
 		while(fscanf(host_out, "%[^\n]\n", out) == 1)
-			printf("%s<br />\n",out);
+			printf("%s\n",out);
 			
 	}
 
