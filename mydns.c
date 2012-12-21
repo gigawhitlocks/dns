@@ -11,6 +11,15 @@ int main (void) {
 
 	//set up the environment
 	printf("%s%c%c\n","Content-Type:text/html;charset=iso-8859-1\n",13,10);
+	printf("<html>\n<head>\n<title>DNS Tool</title>\n</head>\n<body>\n");
+
+	//a form for using the script
+	printf("<form action=\"/dns.cgi\" method=\"get\">\n");
+	printf("<label for=\"hostname\">Enter a hostname:</label>\n");
+	printf("<input type=\"text\" name=\"hostname\">\n");
+	printf("<input type=\"submit\" value=\"Get DNS Zone\"></form>\n");
+	printf("<pre>");
+
 	char* get = getenv("QUERY_STRING");
 
 	//QUERY_STRING improperly set
@@ -52,10 +61,13 @@ int main (void) {
 
 	//otherwise, poop out the output
 	else {
-		while(fscanf(host_out, "%s\n", out) == 1)
-			printf("%s\n",out);
+		while(fscanf(host_out, "%[^\n]\n", out) == 1)
+			printf("%s<br />\n",out);
+			
 	}
 
+
+	printf("</pre>\n</body>\n</html>\n");
 	//clean up
 	free(cmd);
 	free(hostname);
