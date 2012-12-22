@@ -35,10 +35,30 @@ int main (void) {
 		hostname = (char*)malloc(strlen(get)*sizeof(char));
 		int i;
 
-		//this is probably insecure.
+		//Grab the input from GET and check to see if we got something
 		if (i = sscanf(get, "hostname=%s", hostname) < 1 ) {
-        		puts("No addresses given.");
+        		puts("No address given.");
         		return 0;
+
+		//if we did get something:
+		} else {
+
+			// for each char in hostname:
+			int x;
+			for ( x = 0; x < strlen(hostname); x++ ) {
+				if ( ! 						         // if current char is not a
+					( hostname[x] == '-' || hostname[x] == '.'    || // hyphen or period,
+					( hostname[x] >= '0' && hostname[x] <= '9' )  || // a numeral,
+					( hostname[x] >= 'A' && hostname[x] <= 'Z' )  || // an uppercase letter,
+					( hostname[x] >= 'a' && hostname[x] <= 'z' ) )   // or a lowercase letter
+				  	) { // then the hostname is invalid
+
+				//	printf("%s is invalid. %c (%d) is an invalid character.", hostname, hostname[x], x);
+					printf("The given input is not a valid hostname.\n");
+					return 0;
+				}
+			}
+
 		}
   	}
 
