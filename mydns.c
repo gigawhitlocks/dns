@@ -55,6 +55,7 @@ int main (void) {
 
 				//	printf("%s is invalid. %c (%d) is an invalid character.", hostname, hostname[x], x);
 					printf("The given input is not a valid hostname.\n");
+					free(hostname);
 					return 0;
 				}
 			}
