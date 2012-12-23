@@ -61,10 +61,11 @@ int main (void) {
 
 	
 	//set up the command to run
-	char* cmd = (char*)malloc(sizeof(char)*strlen(hostname)+9);
+	char* cmd = (char*)malloc(sizeof(char)*strlen(hostname)+17);
 	cmd[0] = '\0';
 	strcat(cmd, "host -a ");
-	strcat(cmd, hostname);	
+	strcat(cmd, hostname);
+	strcat(cmd, " 8.8.8.8");
 
 	//run it with popen() (yay don't have to fork() manually)
 	FILE* host_out = popen(cmd, "r");
