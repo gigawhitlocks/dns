@@ -1,9 +1,5 @@
-#include <sys/socket.h>
-#include <sys/types.h>
 #include <stdio.h>
 #include <string.h>
-#include <assert.h>
-#include <unistd.h>
 #include <stdlib.h>
 
 int main (void) {
